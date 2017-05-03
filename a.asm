@@ -1,4 +1,4 @@
-;6 задание
+;MSU task 6, assembler 
 include console.inc
 
 .data
