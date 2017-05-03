@@ -1,3 +1,4 @@
+;6 задание
 include console.inc
 
 .data
@@ -55,29 +56,51 @@ printtext endp
 
 check proc
 	mov edx, [edi]
-	call islatin
-
-	ret
-ise:
-	outstrln "явл€етс€ E"
+	call islat
+	
+	lea esi, x
+pcycle2:
+	mov edx, [esi]
+	inc esi
+	cmp edx, [edi]
+	je equal
+	cmp esi, edi
+	jl pcycle2
+	ret	
+equal:
+	outstrln "Equal"
 	ret
 check endp
 
-islatin 
+islat proc
+	cmp edx, 'A'
+	jl notlat
+	cmp edx, 'Z'
+	jg notlat
+	xor eax, eax
+	ret
+notlat:
+	mov eax, 1 ; eax = 1 ошибка
+	ret
+islat endp
 	
 
 start:
 	outstrln "¬ведите символы, не более 100:"
 	
 	call input      ;ввод текста
-    cmp eax,0
-    jne finish
-  	
-	;lea dx,strtxt ; »сходный текст
-    call printtext   ;вывод введенного текста
-
+	cmp eax, 1
+	je finish
+    
+	call printtext   ;вывод введенного текста
     call check      ;проверка свойства
-comment*
+	
+	cmp eax, 1
+	je finish
+	outstrln "Latin"
+	jmp finish
+
+	comment*
     cmp ax,0
     je .rule2
 
@@ -93,7 +116,8 @@ comment*
     lea dx,strresult
     call printstr
 *
-
+temp:
+	;outstrln "Equal"
 finish:
 	exit
 	end start
